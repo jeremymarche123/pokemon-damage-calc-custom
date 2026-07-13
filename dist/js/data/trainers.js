@@ -1,16 +1,54 @@
 var TRAINERS = {
-    "Albert": `
-Pidgey
-Level: 12
-Ability: Keen Eye
+    "Roxanne": `
+Bonsly
+Level: 10
+Item: Miracle Seed
+Ability: Prankster
+- Stealth Rock
+- Smack Down
+- Leech Life
 - Tackle
-- Gust
 
-Pidgeotto
+Larvitar
+Level: 11
+Ability: Intimidate
+- Sand Tomb
+- Smack Down
+- Scratch
+- Rock Smash
+
+Tirtouga
+Level: 12
+Ability: Sturdy
+- Water Gun
+- Quick Attack
+- Withdraw
+- Aqua Ring
+
+Shieldon
+Level: 13
+Ability: Sturdy
+- Smack Down
+- Take Down
+- Metal Claw
+- Bullet Punch
+
+Rhyhorn
 Level: 14
-Ability: Keen Eye
+Item: Focus Sash
+Ability: Lightning Rod
+- Sand Tomb
+- Cut
+- Peck
+- Ancient Power
+
+Graveler
+Level: 15
+Ability: Sturdy
+- Bullet Punch
 - Tackle
-- Gust
+- Ancient Power
+- Mud-Slap
 `,
 
     "Mortimer": `

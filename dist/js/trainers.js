@@ -44,6 +44,7 @@ function loadTrainer(name) {
 	}
 
 	console.log("Équipe :", team);
+	showTrainerTeam(team, name);
 
 
 	// Ajoute les sets personnalisés
@@ -105,24 +106,12 @@ function loadTrainer(name) {
 			firstPokemon
 		);
 
+		// Force Select2 à oublier l'ancien Pokémon
+		selector.select2("data", null);
+
 
 		// Change la donnée Select2
 		selector.select2("data", firstPokemon);
-
-
-		// Change le texte affiché après le rafraîchissement Select2
-		setTimeout(function () {
-
-			$("#p2 .select2-chosen")
-				.text(firstPokemon.text);
-
-		}, 50);
-
-
-		// Change aussi immédiatement le texte affiché
-		selector.closest("#p2")
-			.find(".select2-chosen")
-			.text(firstPokemon.text);
 
 
 		// Force les événements du calculateur
@@ -143,7 +132,18 @@ function loadTrainer(name) {
 		});
 
 
-		selector.trigger("change");
+		// Force uniquement l'affichage après le rafraîchissement
+		setTimeout(function () {
+
+			selector
+				.parent()
+				.find(".select2-chosen")
+				.first()
+				.text(firstPokemon.text);
+
+			console.log("Nom affiché forcé :", firstPokemon.text);
+
+		}, 100);
 
 
 		console.log(
@@ -152,5 +152,112 @@ function loadTrainer(name) {
 
 
 	}, 1000);
+
+}
+
+function showTrainerTeam(team, name) {
+
+	var container = $("#trainer-team-list");
+
+	container.empty();
+
+
+	var pokemons = team
+		.trim()
+		.split("\n\n");
+
+
+	var title = $("<h3>")
+		.text("Équipe " + name);
+
+	container.append(title);
+
+
+	pokemons.forEach(function (pokemon) {
+
+		var pokemonName = pokemon
+			.split("\n")[0];
+
+
+		var button = $("<button>")
+			.text(pokemonName)
+			.addClass("trainer-pokemon-button");
+
+
+		button.on("click", function () {
+
+			loadPokemonFromTrainer(
+				name,
+				pokemonName
+			);
+
+		});
+
+
+		container.append(button);
+
+	});
+
+}
+
+function loadPokemonFromTrainer(trainer, pokemonName) {
+
+
+	var options = getSetOptions();
+
+
+	var pokemon = options.find(function(option) {
+
+		return option.isCustom &&
+			option.set.toLowerCase() === trainer.toLowerCase() &&
+			option.pokemon.toLowerCase() === pokemonName.toLowerCase();
+
+	});
+
+
+	if (!pokemon) {
+
+		console.log("Pokémon introuvable :", pokemonName);
+		return;
+
+	}
+
+
+	var selector = $("#p2 .set-selector");
+
+
+	selector.select2("data", null);
+
+	selector.select2("data", pokemon);
+
+
+	selector.trigger({
+
+		type: "select2-selecting",
+		val: pokemon.id,
+		object: pokemon
+
+	});
+
+
+	selector.trigger({
+
+		type: "change",
+		added: pokemon
+
+	});
+
+
+	selector
+		.parent()
+		.find(".select2-chosen")
+		.first()
+		.text(pokemon.text);
+
+
+	console.log(
+		"Pokémon chargé :",
+		pokemon
+	);
 
 }
