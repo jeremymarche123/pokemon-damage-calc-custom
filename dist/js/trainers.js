@@ -1,154 +1,156 @@
+/* global TRAINERS, addSets, loadDefaultLists, getSetOptions, $ */
+
 console.log("trainers.js chargé");
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    var select = document.getElementById("trainer-select");
+	var select = document.getElementById("trainer-select");
 
-    console.log("Menu trouvé :", select);
+	console.log("Menu trouvé :", select);
 
-    if (!select) return;
+	if (!select) return;
 
-    for (var trainerName in TRAINERS) {
+	for (var trainerName in TRAINERS) {
 
-        var option = document.createElement("option");
-        option.value = trainerName;
-        option.textContent = trainerName;
-        select.appendChild(option);
+		var option = document.createElement("option");
+		option.value = trainerName;
+		option.textContent = trainerName;
+		select.appendChild(option);
 
-    }
+	}
 
-    select.addEventListener("change", function () {
+	select.addEventListener("change", function () {
 
-        if (this.value) {
-            loadTrainer(this.value);
-        }
+		if (this.value) {
+			loadTrainer(this.value);
+		}
 
-    });
+	});
 
 });
 
 
 function loadTrainer(name) {
 
-    console.log("Dresseur choisi :", name);
+	console.log("Dresseur choisi :", name);
 
-    var team = TRAINERS[name];
+	var team = TRAINERS[name];
 
-    if (!team) {
+	if (!team) {
 
-        console.log("Dresseur introuvable");
-        return;
+		console.log("Dresseur introuvable");
+		return;
 
-    }
+	}
 
-    console.log("Équipe :", team);
-
-
-    // Ajoute les sets personnalisés
-    addSets(team, name);
+	console.log("Équipe :", team);
 
 
-    // Recharge les listes du calculateur
-    loadDefaultLists();
+	// Ajoute les sets personnalisés
+	addSets(team, name);
 
 
-    setTimeout(function () {
-
-        var options = getSetOptions();
-
-
-        // Premier Pokémon de l'équipe
-        var firstPokemonName = team
-            .trim()
-            .split("\n")[0];
+	// Recharge les listes du calculateur
+	loadDefaultLists();
 
 
-        // Recherche du set custom correspondant
-        var firstPokemon = options.find(function (option) {
+	setTimeout(function () {
 
-            return option.isCustom &&
+		var options = getSetOptions();
+
+
+		// Premier Pokémon de l'équipe
+		var firstPokemonName = team
+			.trim()
+			.split("\n")[0];
+
+
+		// Recherche du set custom correspondant
+		var firstPokemon = options.find(function (option) {
+
+			return option.isCustom &&
                 option.set.toLowerCase() === name.toLowerCase() &&
                 option.pokemon.toLowerCase() === firstPokemonName.toLowerCase();
 
-        });
+		});
 
 
-        console.log(
-            "Sets custom trouvés :",
-            options.filter(function (option) {
-                return option.isCustom;
-            })
-        );
+		console.log(
+			"Sets custom trouvés :",
+			options.filter(function (option) {
+				return option.isCustom;
+			})
+		);
 
 
-        console.log(
-            "Pokemon automatique trouvé :",
-            firstPokemon
-        );
+		console.log(
+			"Pokemon automatique trouvé :",
+			firstPokemon
+		);
 
 
-        if (!firstPokemon) {
+		if (!firstPokemon) {
 
-            console.log("Aucun Pokémon trouvé");
-            return;
+			console.log("Aucun Pokémon trouvé");
+			return;
 
-        }
-
-
-        var selector = $("#p2 .set-selector");
+		}
 
 
-        console.log(
-            "Sélection forcée :",
-            firstPokemon
-        );
+		var selector = $("#p2 .set-selector");
 
 
-        // Change la donnée Select2
-        selector.select2("data", firstPokemon);
+		console.log(
+			"Sélection forcée :",
+			firstPokemon
+		);
 
 
-        // Change le texte affiché après le rafraîchissement Select2
-        setTimeout(function () {
-
-            $("#p2 .select2-chosen")
-                .text(firstPokemon.text);
-
-        }, 50);
+		// Change la donnée Select2
+		selector.select2("data", firstPokemon);
 
 
-        // Change aussi immédiatement le texte affiché
-        selector.closest("#p2")
-            .find(".select2-chosen")
-            .text(firstPokemon.text);
+		// Change le texte affiché après le rafraîchissement Select2
+		setTimeout(function () {
+
+			$("#p2 .select2-chosen")
+				.text(firstPokemon.text);
+
+		}, 50);
 
 
-        // Force les événements du calculateur
-        selector.trigger({
-
-            type: "select2-selecting",
-            val: firstPokemon.id,
-            object: firstPokemon
-
-        });
+		// Change aussi immédiatement le texte affiché
+		selector.closest("#p2")
+			.find(".select2-chosen")
+			.text(firstPokemon.text);
 
 
-        selector.trigger({
+		// Force les événements du calculateur
+		selector.trigger({
 
-            type: "change",
-            added: firstPokemon
+			type: "select2-selecting",
+			val: firstPokemon.id,
+			object: firstPokemon
 
-        });
-
-
-        selector.trigger("change");
-
-
-        console.log(
-            "Sélection envoyée au calculateur"
-        );
+		});
 
 
-    }, 1000);
+		selector.trigger({
+
+			type: "change",
+			added: firstPokemon
+
+		});
+
+
+		selector.trigger("change");
+
+
+		console.log(
+			"Sélection envoyée au calculateur"
+		);
+
+
+	}, 1000);
 
 }
