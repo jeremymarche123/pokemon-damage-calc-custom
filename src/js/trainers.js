@@ -2,23 +2,27 @@ console.log("trainers.js chargé");
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const select = document.getElementById("trainer-select");
+    var select = document.getElementById("trainer-select");
 
     console.log("Menu trouvé :", select);
 
     if (!select) return;
 
-    for (const trainerName in TRAINERS) {
-        const option = document.createElement("option");
+    for (var trainerName in TRAINERS) {
+
+        var option = document.createElement("option");
         option.value = trainerName;
         option.textContent = trainerName;
         select.appendChild(option);
+
     }
 
     select.addEventListener("change", function () {
+
         if (this.value) {
             loadTrainer(this.value);
         }
+
     });
 
 });
@@ -28,11 +32,13 @@ function loadTrainer(name) {
 
     console.log("Dresseur choisi :", name);
 
-    const team = TRAINERS[name];
+    var team = TRAINERS[name];
 
     if (!team) {
+
         console.log("Dresseur introuvable");
         return;
+
     }
 
     console.log("Équipe :", team);
@@ -48,17 +54,17 @@ function loadTrainer(name) {
 
     setTimeout(function () {
 
-        const options = getSetOptions();
+        var options = getSetOptions();
 
 
         // Premier Pokémon de l'équipe
-        const firstPokemonName = team
+        var firstPokemonName = team
             .trim()
             .split("\n")[0];
 
 
         // Recherche du set custom correspondant
-        const firstPokemon = options.find(function (option) {
+        var firstPokemon = options.find(function (option) {
 
             return option.isCustom &&
                 option.set.toLowerCase() === name.toLowerCase() &&
@@ -69,7 +75,9 @@ function loadTrainer(name) {
 
         console.log(
             "Sets custom trouvés :",
-            options.filter(option => option.isCustom)
+            options.filter(function (option) {
+                return option.isCustom;
+            })
         );
 
 
@@ -80,12 +88,14 @@ function loadTrainer(name) {
 
 
         if (!firstPokemon) {
+
             console.log("Aucun Pokémon trouvé");
             return;
+
         }
 
 
-        const selector = $("#p2 .set-selector");
+        var selector = $("#p2 .set-selector");
 
 
         console.log(
@@ -97,13 +107,17 @@ function loadTrainer(name) {
         // Change la donnée Select2
         selector.select2("data", firstPokemon);
 
+
+        // Change le texte affiché après le rafraîchissement Select2
         setTimeout(function () {
+
             $("#p2 .select2-chosen")
                 .text(firstPokemon.text);
+
         }, 50);
 
 
-        // Change le texte affiché
+        // Change aussi immédiatement le texte affiché
         selector.closest("#p2")
             .find(".select2-chosen")
             .text(firstPokemon.text);
@@ -111,15 +125,19 @@ function loadTrainer(name) {
 
         // Force les événements du calculateur
         selector.trigger({
+
             type: "select2-selecting",
             val: firstPokemon.id,
             object: firstPokemon
+
         });
 
 
         selector.trigger({
+
             type: "change",
             added: firstPokemon
+
         });
 
 
