@@ -294,6 +294,12 @@ function addToDex(poke) {
 		customsets["Aegislash-Shield"][poke.nameProp] = dexObject;
 		customsets["Aegislash-Both"][poke.nameProp] = dexObject;
 	}
+	// Ajout direct dans le dex du calculateur
+	if (!setdex[poke.name]) {
+		setdex[poke.name] = {};
+	}
+
+	setdex[poke.name][poke.nameProp] = dexObject;
 	updateDex(customsets);
 }
 
