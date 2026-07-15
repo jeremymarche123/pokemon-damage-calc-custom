@@ -296,3 +296,5 @@ function loadPokemonFromTrainer(trainer, pokemonName) {
 	);
 
 }
+
+//test
