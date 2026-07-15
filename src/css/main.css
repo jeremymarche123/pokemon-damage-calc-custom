@@ -707,3 +707,180 @@ table.field {
 .flex-parent {
 	display: flex;
 }
+
+#pokemon-box-window {
+
+	background:#222;
+	color:white;
+
+	width:700px;
+	margin-top:10px;
+	padding:20px;
+
+	border-radius:10px;
+
+	display:block !important;
+
+}
+
+
+/* Header */
+
+.box-header {
+
+	display:flex !important;
+	justify-content:space-between !important;
+	align-items:center !important;
+
+}
+
+
+/* Conteneurs Team + Box */
+
+#team-container,
+#box-container {
+
+	display:flex !important;
+	flex-direction:row !important;
+	flex-wrap:wrap !important;
+
+	gap:10px !important;
+
+	width:100% !important;
+}
+
+
+/* Cases Pokémon */
+
+#pokemon-box-window .pokemon-slot {
+
+	display:flex !important;
+
+	flex:0 0 90px !important;
+
+	width:90px !important;
+	height:100px !important;
+
+	flex-direction:column !important;
+	align-items:center !important;
+	justify-content:center !important;
+
+	text-align:center;
+
+	cursor:pointer;
+
+	padding:5px;
+
+	border-radius:8px;
+
+	background:#333;
+
+	margin:5px !important;
+
+}
+
+
+/* Effet souris */
+
+#pokemon-box-window .pokemon-slot:hover {
+
+	background:#555;
+
+	transform:scale(1.05);
+
+}
+
+
+/* Sprite */
+
+#pokemon-box-window .pokemon-slot img {
+
+	width:64px !important;
+	height:64px !important;
+
+	image-rendering:pixelated;
+
+}
+
+
+/* Scroll Box */
+
+#pokemon-box-window #box-container {
+
+	max-height:350px !important;
+
+	overflow-y:auto !important;
+
+}
+
+/* Texte sous le sprite */
+
+#pokemon-box-window .pokemon-slot p {
+
+	margin:2px 0 0 0 !important;
+
+	font-size:12px !important;
+
+}
+
+
+#pokemon-box-window .pokemon-slot span {
+
+	font-size:11px !important;
+
+	color:#ccc;
+
+}
+
+#pokemon-box-window {
+	width:100% !important;
+	display:block !important;
+	margin-top:20px !important;
+}
+
+#team-container,
+#box-container {
+	display:grid !important;
+	grid-template-columns:repeat(6, 90px) !important;
+	gap:10px !important;
+}
+
+/* Place la box sous tout le calculateur */
+.wrapper #pokemon-box-window {
+
+	display:block !important;
+
+	width:100% !important;
+	max-width:100% !important;
+
+	flex-basis:100% !important;
+
+	clear:both !important;
+
+	margin-top:20px !important;
+
+}
+
+.wrapper {
+
+	flex-wrap:wrap !important;
+
+}
+
+#team-container,
+#box-container {
+	display:grid !important;
+	grid-template-columns:repeat(6,90px) !important;
+	gap:10px !important;
+	width:100% !important;
+}
+
+#pokemon-box-window .pokemon-slot {
+	width:90px !important;
+	height:100px !important;
+
+	display:flex !important;
+	flex-direction:column !important;
+	align-items:center !important;
+	justify-content:center !important;
+}

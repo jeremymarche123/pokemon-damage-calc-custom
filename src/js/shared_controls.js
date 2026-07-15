@@ -1647,17 +1647,36 @@ function getSetOptions(sets) {
 			}
 		} else {
 			if (pokeName in setdex) {
+
 				var setNames = Object.keys(setdex[pokeName]);
+
 				for (var j = 0; j < setNames.length; j++) {
+
 					var setName = setNames[j];
+
+					var setData = setdex[pokeName][setName];
+
+
+					// Ne pas afficher les Pokémon de dresseurs dans le Select Pokémon 1/2
+					if (setData.isCustomSet) {
+						continue;
+					}
+
+
 					setOptions.push({
+
 						pokemon: pokeName,
+
 						set: setName,
+
 						text: pokeName + " (" + setName + ")",
+
 						id: pokeName + " (" + setName + ")",
-						isCustom: setdex[pokeName][setName].isCustomSet,
-						nickname: setdex[pokeName][setName].nickname || ""
+
+						nickname: setData.nickname || ""
+
 					});
+
 				}
 			}
 			setOptions.push({

@@ -1,11 +1,23 @@
+let pokemonBox = [];
+let pokemonTeam = [];
+
 function placeBsBtn() {
 	var importBtn = "<button id='import' class='bs-btn bs-btn-default'>Import</button>";
 	$("#import-1_wrapper").append(importBtn);
 
 	$("#import.bs-btn").click(function () {
+
 		var pokes = document.getElementsByClassName("import-team-text")[0].value;
-		var name = document.getElementsByClassName("import-name-text")[0].value.trim() === "" ? "Custom Set" : document.getElementsByClassName("import-name-text")[0].value;
+		var name = document.getElementsByClassName("import-name-text")[0].value.trim() === "" 
+			? "Custom Set" 
+			: document.getElementsByClassName("import-name-text")[0].value;
+
 		addSets(pokes, name);
+
+		openPokemonBox();
+
+		loadDefaultLists();
+
 	});
 }
 
@@ -314,6 +326,10 @@ function updateDex(customsets) {
 }
 
 function addSets(pokes, name) {
+
+	pokemonBox = [];
+	pokemonTeam = [];
+
 	var rows = pokes.split("\n");
 	var currentRow;
 	var species;
@@ -335,7 +351,16 @@ function addSets(pokes, name) {
 				currentPoke.nameProp = name;
 			}
 			currentPoke.isCustomSet = true;
+
 			addToDex(currentPoke);
+
+			// Ajout pour la Box Pokémon
+			pokemonBox.push(currentPoke);
+
+			if (pokemonTeam.length < 6) {
+				pokemonTeam.push(currentPoke);
+			}
+
 			addedPokes++;
 		}
 	}
