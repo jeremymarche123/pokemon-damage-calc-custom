@@ -1832,6 +1832,13 @@ function loadDefaultLists() {
 			var pageSize = 30;
 			var results = [];
 			var options = getSetOptions();
+
+			// Si c'est le sélecteur de Pokémon 1, on cache les sets des dresseurs
+			if ($(query.element).closest("#p1").length) {
+				options = options.filter(function(option) {
+					return !option.isCustom;
+				});
+			}
 			for (var i = 0; i < options.length; i++) {
 				var option = options[i];
 				var pokeName = option.pokemon.toUpperCase();
