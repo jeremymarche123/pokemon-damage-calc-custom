@@ -298,3 +298,4 @@ function loadPokemonFromTrainer(trainer, pokemonName) {
 }
 
 //test
+//test 2
