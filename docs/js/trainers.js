@@ -44,20 +44,16 @@ function loadTrainer(name) {
 	}
 
 	console.log("Équipe :", team);
+
+
+	// Affiche l'équipe du dresseur dans la box
 	showTrainerTeam(team, name);
-
-
-	// Ajoute les sets personnalisés
-	addSets(team, name);
-
-
-	// Recharge les listes du calculateur
-	loadDefaultLists();
 
 
 	setTimeout(function () {
 
-		var options = getSetOptions();
+
+		var options = window.TRAINER_OPTIONS || [];
 
 
 		// Premier Pokémon de l'équipe
@@ -66,33 +62,35 @@ function loadTrainer(name) {
 			.split("\n")[0];
 
 
-		// Recherche du set custom correspondant
+		// Cherche le premier Pokémon dans les options du dresseur
 		var firstPokemon = options.find(function (option) {
 
 			return option.isCustom &&
-                option.set.toLowerCase() === name.toLowerCase() &&
-                option.pokemon.toLowerCase() === firstPokemonName.toLowerCase();
+				option.set.toLowerCase() === name.toLowerCase() &&
+				option.pokemon.toLowerCase() === firstPokemonName.toLowerCase();
 
 		});
 
 
 		console.log(
-			"Sets custom trouvés :",
-			options.filter(function (option) {
-				return option.isCustom;
-			})
+			"Options du dresseur :",
+			options
 		);
 
 
 		console.log(
-			"Pokemon automatique trouvé :",
+			"Premier Pokémon trouvé :",
 			firstPokemon
 		);
 
 
 		if (!firstPokemon) {
 
-			console.log("Aucun Pokémon trouvé");
+			console.log(
+				"Aucun Pokémon trouvé pour :",
+				firstPokemonName
+			);
+
 			return;
 
 		}
@@ -102,19 +100,20 @@ function loadTrainer(name) {
 
 
 		console.log(
-			"Sélection forcée :",
+			"Chargement dans Pokémon 2 :",
 			firstPokemon
 		);
 
-		// Force Select2 à oublier l'ancien Pokémon
+
+		// Nettoie l'ancien Pokémon
 		selector.select2("data", null);
 
 
-		// Change la donnée Select2
+		// Charge le nouveau Pokémon
 		selector.select2("data", firstPokemon);
 
 
-		// Force les événements du calculateur
+		// Force le calculateur à prendre le changement
 		selector.trigger({
 
 			type: "select2-selecting",
@@ -132,7 +131,7 @@ function loadTrainer(name) {
 		});
 
 
-		// Force uniquement l'affichage après le rafraîchissement
+		// Force l'affichage du nom
 		setTimeout(function () {
 
 			selector
@@ -141,17 +140,17 @@ function loadTrainer(name) {
 				.first()
 				.text(firstPokemon.text);
 
-			console.log("Nom affiché forcé :", firstPokemon.text);
 
-		}, 100);
+			console.log(
+				"Nom affiché :",
+				firstPokemon.text
+			);
+
+		},100);
 
 
-		console.log(
-			"Sélection envoyée au calculateur"
-		);
+	},100);
 
-
-	}, 1000);
 
 }
 
@@ -160,6 +159,10 @@ function showTrainerTeam(team, name) {
 	var container = $("#trainer-team-list");
 
 	container.empty();
+
+
+	// Stockage des Pokémon du dresseur sans toucher aux listes globales
+	window.TRAINER_OPTIONS = [];
 
 
 	var pokemons = team
@@ -175,8 +178,33 @@ function showTrainerTeam(team, name) {
 
 	pokemons.forEach(function (pokemon) {
 
-		var pokemonName = pokemon
-			.split("\n")[0];
+
+		var lines = pokemon.split("\n");
+
+
+		var pokemonName = lines[0].trim();
+
+
+		// Création de l'option pour le chargement P2
+		var option = {
+
+			pokemon: pokemonName,
+
+			set: name,
+
+			text: pokemonName + " (" + name + ")",
+
+			id: pokemonName + " (" + name + ")",
+
+			isCustom: true,
+
+			nickname: ""
+
+		};
+
+
+		window.TRAINER_OPTIONS.push(option);
+
 
 
 		var button = $("<button>")
@@ -196,14 +224,21 @@ function showTrainerTeam(team, name) {
 
 		container.append(button);
 
+
 	});
+
+
+	console.log(
+		"TRAINER_OPTIONS créés :",
+		window.TRAINER_OPTIONS
+	);
 
 }
 
 function loadPokemonFromTrainer(trainer, pokemonName) {
 
 
-	var options = getSetOptions();
+	var options = window.TRAINER_OPTIONS || [];
 
 
 	var pokemon = options.find(function(option) {
@@ -256,7 +291,7 @@ function loadPokemonFromTrainer(trainer, pokemonName) {
 
 
 	console.log(
-		"Pokémon chargé :",
+		"Pokémon chargé depuis le dresseur :",
 		pokemon
 	);
 
