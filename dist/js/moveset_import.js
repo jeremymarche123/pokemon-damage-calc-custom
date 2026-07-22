@@ -330,6 +330,19 @@ function updateDex(customsets) {
 			SETDEX_RBY[pokemon][moveset] = customsets[pokemon][moveset];
 		}
 	}
+	// AJOUT IMPORTANT
+	for (var pokemon in customsets) {
+
+		if (!setdex[pokemon]) {
+			setdex[pokemon] = {};
+		}
+
+		for (var moveset in customsets[pokemon]) {
+
+			setdex[pokemon][moveset] = customsets[pokemon][moveset];
+
+		}
+	}
 	localStorage.customsets = JSON.stringify(customsets);
 }
 
