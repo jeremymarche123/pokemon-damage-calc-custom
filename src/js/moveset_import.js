@@ -373,6 +373,12 @@ function addSets(pokes, name) {
 			}
 			currentPoke.isCustomSet = true;
 
+			console.log(
+				"Ajout custom dex :",
+				currentPoke.name,
+				currentPoke.nameProp
+			);
+
 			addToDex(currentPoke);
 
 			// Ajout pour la Box Pokémon
