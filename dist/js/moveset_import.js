@@ -306,6 +306,8 @@ function addToDex(poke) {
 function updateDex(customsets) {
 	for (var pokemon in customsets) {
 		for (var moveset in customsets[pokemon]) {
+			if (!setdex[pokemon]) setdex[pokemon] = {};
+			setdex[pokemon][moveset] = customsets[pokemon][moveset];
 			if (!SETDEX_CHAMPIONS[pokemon]) SETDEX_CHAMPIONS[pokemon] = {};
 			SETDEX_CHAMPIONS[pokemon][moveset] = customsets[pokemon][moveset];
 			if (!SETDEX_SV[pokemon]) SETDEX_SV[pokemon] = {};
